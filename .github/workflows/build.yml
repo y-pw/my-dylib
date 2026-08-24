@@ -1,0 +1,21 @@
+name: Build iOS Dylib
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile Dylib
+        run: |
+          xcrun --sdk iphoneos clang -dynamiclib -arch arm64 -isysroot $(xcrun --sdk iphoneos --show-sdk-path) -framework UIKit -framework Foundation eyad73xx_dylib.m -o eyad73xx.dylib
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: eyad73xx-dylib
+          path: eyad73xx.dylib
